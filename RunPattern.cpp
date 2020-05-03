@@ -5,7 +5,7 @@
 using namespace std;
 
 
-int FindTheWay(int x, int y, vector<string> &pattern, string route, int endx, int endy){
+long FindTheWay(int x, int y, vector<string> &pattern, string route, int endx, int endy){
     if(x == endx && y == endy){
         int acState = 0;
         for(int i = 0; i < pattern.size(); i ++){
@@ -25,11 +25,11 @@ int FindTheWay(int x, int y, vector<string> &pattern, string route, int endx, in
     }
 
     route.push_back('R');
-    int R = FindTheWay(x + 1, y, pattern, route, endx, endy);
+    long R = FindTheWay(x + 1, y, pattern, route, endx, endy);
     route.pop_back();
     
     route.push_back('D');
-    int D = FindTheWay(x, y + 1, pattern, route, endx, endy);
+    long D = FindTheWay(x, y + 1, pattern, route, endx, endy);
     route.pop_back();
     return  (R + D);
 }
@@ -46,7 +46,8 @@ int main(int argc, char ** args){
         pattern.push_back(temp);
         cin >> temp;
         pattern.push_back(temp);
-        int sum = FindTheWay(0, 0, pattern, route, n, m);
+        long sum = FindTheWay(0, 0, pattern, route, n, m);
+        sum %= 1000000007;
         cout << sum << endl;
     }
     return 0;
