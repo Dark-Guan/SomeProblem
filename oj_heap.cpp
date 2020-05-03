@@ -3,7 +3,7 @@
 
 
 // 想得太复杂，不太适合用来解这一题
-// 用一维数组来解比较好；
+// 用一维数组来解比较好；数据结构有问题
 using namespace std;
 
 struct HeapStruct
