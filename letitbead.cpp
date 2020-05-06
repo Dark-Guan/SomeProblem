@@ -57,5 +57,9 @@ int main()
 
 	int a = FindDiffClass(0, res, resL, m, n);
 	cout << a << endl;
+		for (int i = 0; i < resL.size(); i++)
+			{
+				cout<< resL[i] << endl;
+			}
 	return 0;
 }
