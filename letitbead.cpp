@@ -1,6 +1,8 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <algorithm>
+
 using namespace std;
 
 int FindDiffClass(int start, string res, vector<string> &resList, int &end, int &numColor)
@@ -10,12 +12,15 @@ int FindDiffClass(int start, string res, vector<string> &resList, int &end, int 
 		bool findSame = false;
 		int j = end;
 		string temp = res;
+		string tempRes = temp;
+		reverse(tempRes.begin(),tempRes.end());
 		int len = temp.size();
+
 		do
 		{
 			for (int i = 0; i < resList.size(); i++)
 			{
-				if(temp == resList[i]){
+				if(temp == resList[i] || tempRes == resList[i]){
 					findSame = true;
 					break;
 				}
@@ -26,6 +31,8 @@ int FindDiffClass(int start, string res, vector<string> &resList, int &end, int 
 			if(temp.size() > 1){
 				temp = temp + temp;
 				temp = temp.substr(1, len);
+				tempRes = tempRes + tempRes;
+				tempRes = tempRes.substr(1,len);
 			}
 			j--;
 		}while (j);
