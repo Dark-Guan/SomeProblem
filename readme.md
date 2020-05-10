@@ -1,4 +1,8 @@
 
+This is a code bank 
+Email: tickel.guan@gmail.com or dark_guan@foxmail.com
+
+there is some solve for some problem
 
 # 完成情况
 
