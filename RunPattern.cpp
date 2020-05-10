@@ -4,6 +4,10 @@
 
 using namespace std;
 
+const int MAX_WIDTH = 100;
+
+int dp[MAX_WIDTH][MAX_WIDTH];
+
 struct Point{
     int x;
     int y;
@@ -31,8 +35,13 @@ long FindTheWay(Point startP, vector<string> &pattern, string route, Point endP)
             return 0;
         }
     }
+    
     if(startP.x < 0 || startP.y < 0 || startP.x > endP.x || startP.y > endP.y){
         return 0;
+    }
+
+    if(dp[startP.x][startP.y] != 0){
+        return  dp[startP.x][startP.y];
     }
 
     route.push_back('R');
@@ -46,7 +55,8 @@ long FindTheWay(Point startP, vector<string> &pattern, string route, Point endP)
     long D = FindTheWay(startP, pattern, route, endP);
     startP.y -= 1;
     route.pop_back();
-    return  (R + D);
+    dp[startP.x][startP.y] = R + D;
+    return  dp[startP.x][startP.y];
 }
 
 int main(int argc, char ** args){
@@ -61,8 +71,16 @@ int main(int argc, char ** args){
         pattern.push_back(temp);
         cin >> temp;
         pattern.push_back(temp);
+
+
+        for(int i = 0; i < MAX_WIDTH; i ++ ){
+            for(int j = 0; j < MAX_WIDTH; j ++){
+                dp[i][j] = 0;
+            }
+        }
         Point startP;
         Point endP;
+
         startP.x = 0;
         startP.y = 0;
         startP.isMatch = false;
