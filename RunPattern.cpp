@@ -14,6 +14,33 @@ struct Point{
     bool isMatch;
 };
 
+// refresh dp;
+long FindTheWayDP(Point startP, Point endP){ 
+    if(startP.x == endP.x && startP.y == endP.y){
+        return 1;
+    }
+
+    if(startP.x < 0 || startP.y < 0 || startP.x > endP.x || startP.y > endP.y){
+        return 0;
+    }
+
+    if(dp[startP.x][startP.y] != 0){
+        return  dp[startP.x][startP.y];
+    }
+
+    startP.x += 1;
+    long R = FindTheWayDP(startP, endP);
+    startP.x -= 1;
+    
+    startP.y += 1;
+    long D = FindTheWayDP(startP, endP);
+    startP.y -= 1;
+
+    dp[startP.x][startP.y] = R + D;
+    return  dp[startP.x][startP.y];
+}
+
+
 long FindTheWay(Point startP, vector<string> &pattern, string route, Point endP){
     int acState = 0;
     if(!startP.isMatch){
@@ -40,7 +67,7 @@ long FindTheWay(Point startP, vector<string> &pattern, string route, Point endP)
         return 0;
     }
 
-    if(dp[startP.x][startP.y] != 0){
+    if(dp[startP.x][startP.y] != 0 && startP.isMatch){
         return  dp[startP.x][startP.y];
     }
 
@@ -55,8 +82,7 @@ long FindTheWay(Point startP, vector<string> &pattern, string route, Point endP)
     long D = FindTheWay(startP, pattern, route, endP);
     startP.y -= 1;
     route.pop_back();
-    dp[startP.x][startP.y] = R + D;
-    return  dp[startP.x][startP.y];
+    return  R + D;
 }
 
 int main(int argc, char ** args){
@@ -88,7 +114,7 @@ int main(int argc, char ** args){
         endP.x = n;
         endP.y = m;
         endP.isMatch = false;
-
+        FindTheWayDP(startP,endP);
         long sum = FindTheWay(startP, pattern, route, endP);
         cout << sum << endl;
         sum %= 1000000007;
