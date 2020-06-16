@@ -1,6 +1,19 @@
 #include <iostream>
 #include <map>
 
+/*
+3 3 2
+82 3.3
+85 3.7 
+90 4.0
+88 3.5
+84 2.0
+84 1.0 
+
+output 0.1846
+X 分拆解成背包问题
+*/
+
 using namespace std;
 
 float GetMaxAddPiont( map<int, float> sKey,

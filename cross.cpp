@@ -2,6 +2,15 @@
 #include <map>
 #include <vector>
 
+/*
+1 
+4 3 1 4
+1 2 3
+2 3 4
+3 4 5
+
+outpout NO
+*/
 using namespace std;
 
 int main()
