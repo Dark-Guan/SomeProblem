@@ -197,5 +197,8 @@ print *array@len 打印数字array 全部的内容
 
 查看内存
 x/<n/f/u> <address>
+examine/<n/f/u> <address>
+
+如 x/3uh 
 
 */
