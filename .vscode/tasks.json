@@ -8,7 +8,7 @@
             "type": "shell",
             "command": "g++",
             "args": [
-                "oj_heap.cpp",
+                "heibaipei.cpp",
                 "-g",
                 "-o",
                 "oj"
