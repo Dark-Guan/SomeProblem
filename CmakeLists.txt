@@ -1,0 +1,8 @@
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_C_STANDARD 99)
+
+add_executable(3 3.无重复字符的最长子串.cpp)
+add_executable(15 15.三数之和.cpp)
+add_executable(20 20.有效的括号.cpp)
+add_executable(74 74.搜索二维矩阵.cpp)
+add_executable(122 122.买卖股票的最佳时机-ii.cpp)
