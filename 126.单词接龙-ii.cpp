@@ -21,10 +21,16 @@ public:
     {
         map<string, map<string, bool>> dataTree;
         vector<string> allWord;
+        bool isEndWordFind = false;
         allWord.push_back(beginWord);
 
         for (string word : wordList)
         {
+            if (word == endWord)
+            {
+                isEndWordFind = true;
+            }
+
             if (word != beginWord && word != endWord)
             {
                 allWord.push_back(word);
@@ -33,7 +39,10 @@ public:
         allWord.push_back(endWord);
 
         vector<vector<string>> result;
-
+        if (isEndWordFind == false)
+        {
+            return result;
+        }
         // build data tree
         for (int i = 0; i < allWord.size(); i++)
         {
@@ -48,9 +57,18 @@ public:
         }
         vector<string> tempVec;
         tempVec.push_back(beginWord);
-        int minLen = 65535;
-        FindPath(dataTree, result, beginWord, endWord, tempVec, minLen);
+        set<string> setForDup;
 
+        int minLen = 65535;
+        FindPath(dataTree, result, beginWord, endWord, tempVec, setForDup, minLen);
+
+        // for (auto it = result.begin(); it != result.end(); it++)
+        // {
+        //     if (it->size() < minLen)
+        //     {
+        //         minLen = it->size();
+        //     }
+        // }
         // delete the len vector
         for (auto it = result.begin(); it != result.end();)
         {
@@ -70,23 +88,31 @@ private:
     void FindPath(map<string, map<string, bool>> &dataTree,
                   vector<vector<string>> &result,
                   string &beginWord,
-                  string &endWord, vector<string> &tempVec)
-    {
+                  string &endWord, vector<string> &tempVec, set<string> &setForDup, int &minLen)
+    {   
+        if(tempVec.size() > minLen){
+            return;
+        }
+        
         if (beginWord == endWord)
         {
+            if(tempVec.size() < minLen){
+                minLen = tempVec.size();
+            }
             result.push_back(tempVec);
             return;
         }
         if (dataTree.find(beginWord) != dataTree.end())
         {
             for (pair<string, bool> data : dataTree[beginWord])
-            {   
-                if(data.second == false){
-                    data.second = true;
+            {
+                if (setForDup.find(data.first) == setForDup.end())
+                {
+                    setForDup.insert(data.first);
                     tempVec.push_back(data.first);
-                    FindPath(dataTree, result, data.first, endWord, tempVec);
+                    FindPath(dataTree, result, data.first, endWord, tempVec, setForDup, minLen);
                     tempVec.pop_back();
-                    data.second = false;
+                    setForDup.erase(data.first);
                 }
             }
         }
@@ -142,9 +168,12 @@ int main()
     // string endWord = "dog";
     // vector<string> wordList = {"hot", "dog", "dot"};
 
-    string beginWord = "hit";
-    string endWord = "cog";
-    vector<string> wordList = {"hot", "cog", "dot", "dog", "hit", "lot", "log"};
+    // string beginWord = "hit";
+    // string endWord = "cog";
+    // vector<string> wordList = {"hot", "cog", "dot", "dog", "hit", "lot", "log"};
+    string beginWord = "qa";
+    string endWord  = "sq";
+    vector<string> wordList = {"si", "go", "se", "cm", "so", "ph", "mt", "db", "mb", "sb", "kr", "ln", "tm", "le", "av", "sm", "ar", "ci", "ca", "br", "ti", "ba", "to", "ra", "fa", "yo", "ow", "sn", "ya", "cr", "po", "fe", "ho", "ma", "re", "or", "rn", "au", "ur", "rh", "sr", "tc", "lt", "lo", "as", "fr", "nb", "yb", "if", "pb", "ge", "th", "pm", "rb", "sh", "co", "ga", "li", "ha", "hz", "no", "bi", "di", "hi", "qa", "pi", "os", "uh", "wm", "an", "me", "mo", "na", "la", "st", "er", "sc", "ne", "mn", "mi", "am", "ex", "pt", "io", "be", "fm", "ta", "tb", "ni", "mr", "pa", "he", "lr", "sq", "ye" };
     vector<vector<string>> result = solution.findLadders(beginWord, endWord, wordList);
     return 0;
 }
