@@ -8,13 +8,39 @@
 #include <algorithm>
 using namespace std;
 // @lc code=start
-class Solution
+class Solution {
+public:
+    vector<vector<int>> threeSum(vector<int>& nums) {
+        int target;
+        vector<vector<int>> ans;
+        sort(nums.begin(), nums.end());
+        for (int i = 0; i < nums.size(); i++) {
+            if (i > 0 && nums[i] == nums[i - 1]) continue;
+            if ((target = nums[i]) > 0) break;
+            int l = i + 1, r = nums.size() - 1;
+            while (l < r) {
+                if (nums[l] + nums[r] + target < 0) ++l;
+                else if (nums[l] + nums[r] + target > 0) --r;
+                else {
+                    ans.push_back({target, nums[l], nums[r]});
+                    ++l, --r;
+                    while (l < r && nums[l] == nums[l - 1]) ++l;
+                    while (l < r && nums[r] == nums[r + 1]) --r;
+                }
+            }
+        }
+        return ans; 
+    }
+};
+// @lc code=end
+class Solution1
 {
 public:
     vector<vector<int>> threeSum(vector<int> &nums)
     {
         map<vector<int>, bool> storeVec;
         vector<vector<int>> retVec;
+        sort(nums.begin(), nums.end());
         if (nums.size() < 3)
         {
             return retVec;
@@ -23,12 +49,12 @@ public:
         while (first < nums.size() - 2)
         {
             if (calcSum(nums) == 0)
-            {   
+            {
                 tmp.clear();
                 tmp.push_back(nums[first]);
                 tmp.push_back(nums[second]);
                 tmp.push_back(nums[third]);
-                sort(tmp.begin(), tmp.end());
+                // sort(tmp.begin(), tmp.end());
                 // 1
                 // if (isDup(retVec,tmp) == false)
                 // {
@@ -42,15 +68,20 @@ public:
                 // }
                 // 3
                 // auto result = storeVec.emplace(tmp, true);
-                auto result = storeVec.insert(make_pair(tmp,true));
-                if(result.second){
+                // auto result = storeVec.insert(make_pair(tmp, true));
+                // if (result.second)
+                // {
                     retVec.push_back(tmp);
-                }
+                // }
             }
 
             if (second + 1 != third)
-            {
+            {   
                 second++;
+                while (nums[second -1] == nums[second] && (second + 1) < third)
+                {
+                    second++;
+                }
             }
             else if (third + 1 < nums.size())
             {
@@ -60,6 +91,10 @@ public:
             else
             {
                 first++;
+                if (nums[first] > 0)
+                {
+                    break;
+                }
                 second = first + 1;
                 third = second + 1;
             }
@@ -107,7 +142,6 @@ private:
     int second{1};
     int third{2};
 };
-// @lc code=end
 
 int main()
 {
