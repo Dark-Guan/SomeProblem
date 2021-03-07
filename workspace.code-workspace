@@ -1,0 +1,26 @@
+{
+	"folders": [
+		{
+			"path": "../Desktop/vscode/OJ"
+		},
+		{
+			"name": ".leetcode",
+			"path": "."
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"vector": "cpp",
+			"map": "cpp",
+			"queue": "cpp",
+			"algorithm": "cpp",
+			"iomanip": "cpp",
+			"ios": "cpp",
+			"string": "cpp",
+			"utility": "cpp",
+			"ostream": "cpp",
+			"set": "cpp"
+		},
+		"editor.minimap.maxColumn": 80
+	}
+}
