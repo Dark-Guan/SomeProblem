@@ -3,6 +3,9 @@
  *
  * [402] 移掉K位数字
  */
+#include <string>
+
+using namespace std;
 
 // @lc code=start
 class Solution {
