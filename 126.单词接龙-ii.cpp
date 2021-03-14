@@ -5,13 +5,165 @@
  */
 #include <iostream>
 #include <map>
+#include <unordered_map>
 #include <vector>
 #include <string>
-#include <set>
+#include <queue>
 #include <algorithm>
 
 using namespace std;
 // @lc code=start
+class Solution
+{
+    // node 精髓就是存储index 而不是 string， 用map来查询index；用index和map加速；
+    unordered_map<string, int> inWordList;
+    vector<string> idWord;
+    vector<vector<int>> graph;
+
+    const int INF = 1 << 20;
+
+public:
+    vector<vector<string>> findLadders(string beginWord,
+                                       string endWord,
+                                       vector<string> &wordList)
+    {
+        vector<vector<string>> result;
+        // 把数据放入到map中
+        int id = 0;
+
+        for (string word : wordList)
+        {
+            if (!inWordList.count(word))
+            {
+                inWordList[word] = id;
+                id++;
+                idWord.push_back(word);
+            }
+        }
+        if (!inWordList.count(endWord))
+        {
+            return result;
+        }
+        if (!inWordList.count(beginWord))
+        {
+            inWordList[beginWord] = id;
+            id++;
+            idWord.push_back(beginWord);
+        }
+
+        // build graph
+        graph.resize(idWord.size());
+        for (int i = 0; i < idWord.size(); i++)
+        {
+            for (int j = i + 1; j < idWord.size(); j++)
+            {
+                if (IsWordNear(idWord[i], idWord[j]))
+                {
+                    graph[i].push_back(j);
+                    graph[j].push_back(i);
+                }
+            }
+        }
+
+        const int dest = inWordList[endWord]; // the end point
+        queue<vector<int>> qPath;
+        vector<int> cost(id, INF);
+        qPath.push(vector<int>{inWordList[beginWord]});
+        cost[inWordList[beginWord]] = 0; 
+        while (!qPath.empty())
+        {
+            vector<int> now = qPath.front();
+            qPath.pop();
+            int last = now.back();
+            if (last == dest)
+            {
+                vector<string> temp;
+                for (int index : now)
+                {
+                    temp.push_back(idWord[index]);
+                }
+                result.push_back(temp);
+            }
+            else
+            {
+                for (int i = 0; i < graph[last].size(); i++)
+                {
+                    int to = graph[last][i];
+                    if (cost[last] + 1 <= cost[to])
+                    {
+                        cost[to] = cost[last] + 1;
+                        vector<int> temp(now);
+                        temp.push_back(to);
+                        qPath.push(temp);
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+private:
+    bool IsWordNear(string &src, string &dec)
+    {
+        int count = 0;
+        for (int i = 0; i < src.size(); i++)
+        {
+            if (src[i] != dec[i])
+            {
+                count++;
+                if (count > 1)
+                {
+                    return false;
+                }
+            }
+        }
+        if (count == 1)
+        {
+            return true;
+        }
+        return false;
+    }
+};
+// @lc code=end
+
+int main()
+{
+    /*
+    */
+    Solution solution;
+    string beginWord = "hit";
+    string endWord = "cog";
+    vector<string> wordList = {"hot", "dot", "dog", "lot", "log", "cog"};
+    //   [
+    //   ["hit","hot","dot","dog","cog"],
+    //   ["hit","hot","lot","log","cog"]
+    //   ]
+    vector<vector<string>> result = solution.findLadders(beginWord, endWord, wordList);
+    
+    /*
+    Solution solution;
+    string beginWord = "hot";
+    string endWord = "dog";
+    vector<string> swordList = {"hot", "dog", "dot"};
+    result = solution.findLadders(beginWord, endWord, wordList);
+    // []
+
+    Solution solution;
+    string beginWord = "hit";
+    string endWord = "cog";
+    vector<string> wordList = {"hot", "cog", "dot", "dog", "hit", "lot", "log"};
+    vector<vector<string>>  result = solution.findLadders(beginWord, endWord, wordList);
+
+    Solution solution;
+    string beginWord = "qa";
+    string endWord = "sq";
+    vector<string>  wordList = {"si", "go", "se", "cm", "so", "ph", "mt", "db", "mb", "sb", "kr", "ln", "tm", "le", "av", "sm", "ar", "ci", "ca", "br", "ti", "ba", "to", "ra", "fa", "yo", "ow", "sn", "ya", "cr", "po", "fe", "ho", "ma", "re", "or", "rn", "au", "ur", "rh", "sr", "tc", "lt", "lo", "as", "fr", "nb", "yb", "if", "pb", "ge", "th", "pm", "rb", "sh", "co", "ga", "li", "ha", "hz", "no", "bi", "di", "hi", "qa", "pi", "os", "uh", "wm", "an", "me", "mo", "na", "la", "st", "er", "sc", "ne", "mn", "mi", "am", "ex", "pt", "io", "be", "fm", "ta", "tb", "ni", "mr", "pa", "he", "lr", "sq", "ye"};
+    vector<vector<string>>  result = solution.findLadders(beginWord, endWord, wordList);
+    */
+    return 0;
+}
+
+/*
 class Solution
 {
 public:
@@ -154,26 +306,5 @@ private:
         return false;
     }
 };
-// @lc code=end
 
-int main()
-{
-    Solution solution;
-    // string beginWord = "hit";
-    // string endWord = "cog";
-    // vector<string> wordList = {"hot", "dot", "dog", "lot", "log", "cog"};
-    // vector<string> wordList = {"hot", "dot", "dog", "lot", "log", };
-
-    // string beginWord = "hot";
-    // string endWord = "dog";
-    // vector<string> wordList = {"hot", "dog", "dot"};
-
-    // string beginWord = "hit";
-    // string endWord = "cog";
-    // vector<string> wordList = {"hot", "cog", "dot", "dog", "hit", "lot", "log"};
-    string beginWord = "qa";
-    string endWord  = "sq";
-    vector<string> wordList = {"si", "go", "se", "cm", "so", "ph", "mt", "db", "mb", "sb", "kr", "ln", "tm", "le", "av", "sm", "ar", "ci", "ca", "br", "ti", "ba", "to", "ra", "fa", "yo", "ow", "sn", "ya", "cr", "po", "fe", "ho", "ma", "re", "or", "rn", "au", "ur", "rh", "sr", "tc", "lt", "lo", "as", "fr", "nb", "yb", "if", "pb", "ge", "th", "pm", "rb", "sh", "co", "ga", "li", "ha", "hz", "no", "bi", "di", "hi", "qa", "pi", "os", "uh", "wm", "an", "me", "mo", "na", "la", "st", "er", "sc", "ne", "mn", "mi", "am", "ex", "pt", "io", "be", "fm", "ta", "tb", "ni", "mr", "pa", "he", "lr", "sq", "ye" };
-    vector<vector<string>> result = solution.findLadders(beginWord, endWord, wordList);
-    return 0;
-}
+*/
