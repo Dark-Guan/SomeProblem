@@ -46,9 +46,9 @@ class Solution
         //root 必须放置摄像头的情况下，覆盖整棵树需要的摄像头数目。
         int a = lc + rc + 1; 
         // 覆盖整棵树需要的摄像头数目，无论 root 是否放置摄像头。
-        int b = min(a, min(la + rb, lb + ra));
+        int b = min(a, min(la + rb, lb + ra)); 
         // 覆盖两棵子树需要的摄像头数目，无论节点 root 本身是否被监控到。
-        int c = min(a, lb + rb);
+        int c = min(a, lb + rb); 
 
         return {a, b, c};
     }
