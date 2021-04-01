@@ -6,7 +6,9 @@
         "algorithm": "cpp",
         "iomanip": "cpp",
         "ios": "cpp",
-        "string": "cpp"
+        "string": "cpp",
+        "unordered_map": "cpp",
+        "iostream": "cpp"
     },
     "cmake.debugConfig": {
         "stopAtEntry": false,
